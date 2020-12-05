@@ -18,6 +18,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @article.user = User.last # hardcode a user for now
     @article.save
     if @article.save
       flash[:notice] = "Article was created successfully."

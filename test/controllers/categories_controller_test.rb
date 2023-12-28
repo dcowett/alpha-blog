@@ -3,8 +3,11 @@ require 'test_helper'
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @category = Category.create(name: "Sports")
-    @admin_user = User.create(username: "johndoe", email: "johndoe@example.com",
+    @admin_user = User.create(username: "adminuser", email: "admin@example.com",
                               password: "password", admin: true)
+    @notadmin_user = User.create(username: "notadmin",
+                              email: "notadminuser@example.com",
+                              password: "password", admin: false)
   end
 
   test "should get index" do
@@ -40,10 +43,11 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  #test "should get edit" do
-  #  get edit_category_url(@category)
-  #  assert_response :success
-  #end
+  test "should get edit" do
+    sign_in_as(@admin_user)
+    get edit_category_url(@category)
+    assert_response :success
+  end
 
   #test "should update category" do
   #  patch category_url(@category), params: { category: {  } }
